@@ -10,25 +10,13 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>junoyi-framework-quartz</artifactId>
-
     <description>
-        定时任务核心封装模块
+        plugin插件封装，请勿动插件封装！这是核心功能！
     </description>
 
-    <dependencies>
-        <!-- SpringBoot 基础 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
+    <artifactId>junoyi-framework-plugin</artifactId>
 
-        <!-- Spring AOP -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
+    <dependencies>
 
     </dependencies>
-
 </project>
