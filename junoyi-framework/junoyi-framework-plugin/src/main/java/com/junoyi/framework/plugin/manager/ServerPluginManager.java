@@ -10,6 +10,7 @@ import com.junoyi.framework.plugin.spring.PluginBeanRegistrar;
 import com.junoyi.framework.plugin.spring.PluginServerAdapter;
 import com.junoyi.sdk.plugin.JunoYiPlugin;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ConfigurableApplicationContext;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
@@ -43,6 +44,7 @@ public class ServerPluginManager {
 
     public ServerPluginManager(ConfigurableApplicationContext applicationContext,
                                EventBus eventBus,
+                               @Qualifier("requestMappingHandlerMapping")
                                ObjectProvider<RequestMappingHandlerMapping> handlerMappingProvider) {
         this.applicationContext = applicationContext;
         this.eventBus = eventBus;
@@ -91,28 +93,28 @@ public class ServerPluginManager {
                                   DefaultPluginManager defaultPluginManager) {
         try {
             LoadedPlugin loaded = pluginLoader.load(jarFile, applicationContext.getClassLoader());
-            String pluginId = loaded.getPluginInfo().getId();
-            if (plugins.containsKey(pluginId)) {
-                log.warn("Plugin", "Duplicate plugin id {}, skip {}", pluginId, jarFile.getName());
+            String pluginName = loaded.getPluginInfo().getName();
+            if (plugins.containsKey(pluginName)) {
+                log.warn("Plugin", "Duplicate plugin name {}, skip {}", pluginName, jarFile.getName());
                 return;
             }
 
             JunoYiPlugin plugin = loaded.getPlugin();
             plugin.initialize(new PluginServerAdapter(
                     applicationContext.getId(),
-                    new JunoYiJunoYiLoggerAdapter(JunoYiLogFactory.getLogger("Plugin-" + pluginId)),
+                    new JunoYiJunoYiLoggerAdapter(JunoYiLogFactory.getLogger("Plugin-" + pluginName)),
                     defaultPluginManager,
                     applicationContext
-            ), pluginId);
+            ), pluginName);
 
             plugin.onLoad();
             List<String> beanNames = beanRegistrar.register(loaded.getPluginInfo(), loaded.getClassLoader());
             plugin.onEnable();
 
-            plugins.put(pluginId, loaded);
-            pluginBeans.put(pluginId, beanNames);
+            plugins.put(pluginName, loaded);
+            pluginBeans.put(pluginName, beanNames);
             log.info("Plugin", "Plugin loaded: {} v{} | beans={}",
-                    pluginId, loaded.getPluginInfo().getVersion(), beanNames.size());
+                    pluginName, loaded.getPluginInfo().getVersion(), beanNames.size());
         } catch (Exception e) {
             log.error("Plugin", "Failed to load plugin jar: " + jarFile.getName(), e);
         }
@@ -123,13 +125,13 @@ public class ServerPluginManager {
             try {
                 loadedPlugin.getPlugin().onDisable();
             } catch (Exception e) {
-                log.error("Plugin", "Plugin disable error: " + loadedPlugin.getPluginInfo().getId(), e);
+                log.error("Plugin", "Plugin disable error: " + loadedPlugin.getPluginInfo().getName(), e);
             }
 
             try {
                 loadedPlugin.getClassLoader().close();
             } catch (Exception e) {
-                log.error("Plugin", "Plugin classloader close error: " + loadedPlugin.getPluginInfo().getId(), e);
+                log.error("Plugin", "Plugin classloader close error: " + loadedPlugin.getPluginInfo().getName(), e);
             }
         }
         plugins.clear();

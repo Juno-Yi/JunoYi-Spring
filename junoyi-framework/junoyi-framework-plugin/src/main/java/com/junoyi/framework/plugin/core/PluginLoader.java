@@ -12,7 +12,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.jar.JarEntry;
@@ -46,14 +48,18 @@ public class PluginLoader {
                 throw new IllegalStateException("缺少 plugin.properties 或 plugin.yml: " + jarFile.getName());
             }
 
-            String id = first(values, "id", "plugin-id", "pluginId");
-            String name = first(values, "name", "plugin-name", "pluginName", "id");
+            String name = first(values, "name", "plugin-name", "pluginName");
             String version = first(values, "version", "plugin-version", "pluginVersion");
             String mainClass = first(values, "main", "main-class", "mainClass");
 
-            if (id == null || version == null || mainClass == null) {
-                throw new IllegalStateException("插件描述缺少必要字段(id/version/main)");
+            if (name == null || version == null || mainClass == null) {
+                throw new IllegalStateException("插件描述缺少必要字段(name/version/main)");
             }
+
+            List<String> authors = parseAuthors(first(values,
+                    "authors", "author", "plugin-authors", "plugin-author", "pluginAuthors", "pluginAuthor"));
+            String website = first(values, "website", "url", "site", "homepage", "home-page");
+            String description = first(values, "description", "desc");
 
             String basePackage = first(values, "base-package", "basePackage", "scan-package", "scanPackage");
             if (basePackage == null) {
@@ -61,7 +67,7 @@ public class PluginLoader {
                 basePackage = idx > 0 ? mainClass.substring(0, idx) : "";
             }
 
-            return new PluginInfo(id, name == null ? id : name, version, mainClass, basePackage);
+            return new PluginInfo(name, version, authors, website, description, mainClass, basePackage);
         }
     }
 
@@ -113,5 +119,15 @@ public class PluginLoader {
             }
         }
         return null;
+    }
+
+    private List<String> parseAuthors(String authorsRaw) {
+        if (authorsRaw == null || authorsRaw.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(authorsRaw.split("[,;]"))
+                .map(String::trim)
+                .filter(value -> !value.isBlank())
+                .toList();
     }
 }
