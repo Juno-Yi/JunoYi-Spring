@@ -6,10 +6,51 @@
 
     <groupId>com.junoyi</groupId>
     <artifactId>junoyi-framework-sdk</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>JunoYi Framework SDK</name>
-    <description>JunoYi 开放生态共享SDK（先聚合 core，后续逐步抽离公共 API）</description>
+    <description>JunoYi 开放生态共享SDK</description>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>EatFan</name>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <mybatis-plus.version>3.5.7</mybatis-plus.version>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <lombok.version>1.18.34</lombok.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 </project>

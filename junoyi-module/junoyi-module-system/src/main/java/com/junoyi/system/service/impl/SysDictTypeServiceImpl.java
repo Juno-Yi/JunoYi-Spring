@@ -1,10 +1,7 @@
 package com.junoyi.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.junoyi.framework.core.domain.page.PageResult;
 import com.junoyi.framework.core.utils.DateUtils;
-import com.junoyi.framework.core.utils.StringUtils;
 import com.junoyi.framework.event.core.EventBus;
 import com.junoyi.framework.json.utils.JsonUtils;
 import com.junoyi.framework.log.core.JunoYiLog;
@@ -13,7 +10,6 @@ import com.junoyi.framework.security.utils.SecurityUtils;
 import com.junoyi.system.api.SysDictApiImpl;
 import com.junoyi.system.convert.SysDictTypeConverter;
 import com.junoyi.system.domain.dto.SysDictTypeDTO;
-import com.junoyi.system.domain.dto.SysDictTypeQueryDTO;
 import com.junoyi.system.domain.po.SysDictData;
 import com.junoyi.system.domain.po.SysDictType;
 import com.junoyi.system.domain.vo.SysDictTypeVO;

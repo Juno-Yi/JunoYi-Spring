@@ -7,12 +7,10 @@ import com.junoyi.framework.log.core.JunoYiLog;
 import com.junoyi.framework.log.core.JunoYiLogFactory;
 import com.junoyi.framework.redis.utils.RedisUtils;
 import com.junoyi.system.convert.SysDictDataConverter;
-import com.junoyi.system.domain.po.SysDept;
 import com.junoyi.system.domain.po.SysDictData;
 import com.junoyi.system.domain.vo.SysDictDataVO;
 import com.junoyi.system.mapper.SysDictDataMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

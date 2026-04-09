@@ -68,7 +68,7 @@ public class SysSessionServiceImpl implements ISysSessionService {
         if (queryDTO == null) return true;
         
         // 用户名模糊匹配
-        if (StringUtils.isNotBlank(queryDTO.getUserName()) 
+        if (StringUtils.isNotBlank(queryDTO.getUserName())
                 && (session.getUserName() == null || !session.getUserName().contains(queryDTO.getUserName()))) {
             return false;
         }
