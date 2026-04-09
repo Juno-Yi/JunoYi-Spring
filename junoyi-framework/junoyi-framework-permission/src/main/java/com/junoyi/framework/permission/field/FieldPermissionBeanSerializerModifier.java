@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.junoyi.framework.log.core.JunoYiLog;
 import com.junoyi.framework.log.core.JunoYiLogFactory;
 import com.junoyi.framework.permission.annotation.FieldPermission;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 

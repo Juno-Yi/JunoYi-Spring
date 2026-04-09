@@ -1,7 +1,6 @@
 package com.junoyi.system.controller;
 
 import com.junoyi.framework.core.domain.module.R;
-import com.junoyi.framework.core.domain.page.PageResult;
 import com.junoyi.framework.log.core.JunoYiLog;
 import com.junoyi.framework.log.core.JunoYiLogFactory;
 import com.junoyi.framework.permission.annotation.Permission;
@@ -10,7 +9,6 @@ import com.junoyi.framework.security.enums.PlatformType;
 import com.junoyi.framework.web.domain.BaseController;
 import com.junoyi.system.api.SysDictApiImpl;
 import com.junoyi.system.domain.dto.SysDictTypeDTO;
-import com.junoyi.system.domain.dto.SysDictTypeQueryDTO;
 import com.junoyi.system.domain.vo.SysDictTypeVO;
 import com.junoyi.system.service.ISysDictTypeService;
 import io.swagger.v3.oas.annotations.Operation;
