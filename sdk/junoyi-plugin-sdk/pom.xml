@@ -31,7 +31,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring.version>6.1.13</spring.version>
+        <spring.boot.version>3.5.0</spring.boot.version>
         <slf4j.version>2.0.13</slf4j.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <lombok.version>1.18.34</lombok.version>
@@ -51,4 +51,5 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+
 </project>

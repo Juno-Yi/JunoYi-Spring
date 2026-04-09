@@ -14,6 +14,10 @@
     <description>文件存储管理模块 - 支持本地、OSS、MinIO等多种存储方式</description>
 
     <dependencies>
+        <dependency>
+            <groupId>com.junoyi</groupId>
+            <artifactId>junoyi-framework-sdk</artifactId>
+        </dependency>
         <!-- 核心模块 -->
         <dependency>
             <groupId>com.junoyi</groupId>
