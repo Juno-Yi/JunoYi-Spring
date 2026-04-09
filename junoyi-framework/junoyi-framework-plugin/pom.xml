@@ -17,7 +17,7 @@
     <artifactId>junoyi-framework-plugin</artifactId>
 
     <properties>
-        <junoyi.sdk.version>${revision}</junoyi.sdk.version>
+        <junoyi.sdk.version>1.0.0</junoyi.sdk.version>
     </properties>
 
     <dependencies>
