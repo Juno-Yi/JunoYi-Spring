@@ -1,7 +1,6 @@
 package com.junoyi.system.controller;
 
 import com.junoyi.framework.captcha.helper.CaptchaHelper;
-import com.junoyi.framework.captcha.properties.CaptchaProperties;
 import com.junoyi.framework.log.core.JunoYiLog;
 import com.junoyi.framework.log.core.JunoYiLogFactory;
 import com.junoyi.framework.web.domain.BaseController;
