@@ -16,7 +16,37 @@
 
     <artifactId>junoyi-framework-plugin</artifactId>
 
-    <dependencies>
+    <properties>
+        <junoyi.sdk.version>1.0.0</junoyi.sdk.version>
+    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.junoyi</groupId>
+            <artifactId>junoyi-plugin-sdk</artifactId>
+            <version>${junoyi.sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.junoyi</groupId>
+            <artifactId>junoyi-framework-log</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.junoyi</groupId>
+            <artifactId>junoyi-framework-event</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>

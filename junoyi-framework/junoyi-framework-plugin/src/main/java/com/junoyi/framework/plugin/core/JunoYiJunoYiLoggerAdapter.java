@@ -1,17 +1,18 @@
-package com.junoyi.sdk.log;
+package com.junoyi.framework.plugin.core;
 
-import org.slf4j.Logger;
+import com.junoyi.framework.log.core.JunoYiLog;
+import com.junoyi.sdk.log.JunoYiLogger;
 
 import java.util.Objects;
 
 /**
- * 基于 SLF4J 的日志实现。
+ * 基于 JunoYiLog 的插件日志适配器。
  */
-public class Slf4jPluginLogger implements PluginLogger {
+public class JunoYiJunoYiLoggerAdapter implements JunoYiLogger {
 
-    private final Logger logger;
+    private final JunoYiLog logger;
 
-    public Slf4jPluginLogger(Logger logger) {
+    public JunoYiJunoYiLoggerAdapter(JunoYiLog logger) {
         this.logger = Objects.requireNonNull(logger, "logger must not be null");
     }
 

@@ -35,6 +35,8 @@ build/
 
 temp/
 
+plugins/
+
 /.idea/
 
 /log

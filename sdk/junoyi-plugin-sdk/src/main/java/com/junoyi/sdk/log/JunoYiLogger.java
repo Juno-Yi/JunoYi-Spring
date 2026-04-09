@@ -3,7 +3,7 @@ package com.junoyi.sdk.log;
 /**
  * 插件日志门面。
  */
-public interface PluginLogger {
+public interface JunoYiLogger {
 
     void debug(String message);
 
