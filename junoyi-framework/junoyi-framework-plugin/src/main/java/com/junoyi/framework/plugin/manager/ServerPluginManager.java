@@ -45,6 +45,8 @@ public class ServerPluginManager {
 
         initPluginDir();
 
+//        PluginLoader.load(new File())
+
         log.info("Plugin", "All plugins have been initialized.");
     }
 
