@@ -77,7 +77,7 @@ public class PluginBeanRegistrar {
                                         PluginInfo pluginInfo,
                                         ClassLoader classLoader,
                                         ConfigurableListableBeanFactory beanFactory,
-                                        List<String> names) {
+                                        List<String> names) throws Exception {
         BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
         for (Class<?> clazz : componentClasses) {
             if (isControllerClass(clazz) != controllerOnly) {
@@ -88,17 +88,44 @@ public class PluginBeanRegistrar {
                 continue;
             }
 
-            GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-            beanDefinition.setBeanClass(clazz);
-            beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
-            registry.registerBeanDefinition(beanName, beanDefinition);
+            Object bean;
+            if (controllerOnly) {
+                bean = createControllerInstance(clazz, classLoader);
+                beanFactory.registerSingleton(beanName, bean);
+            } else {
+                GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+                beanDefinition.setBeanClass(clazz);
+                beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+                registry.registerBeanDefinition(beanName, beanDefinition);
+                bean = getBeanWithClassLoader(beanFactory, beanName, classLoader);
+            }
 
-            Object bean = getBeanWithClassLoader(beanFactory, beanName, classLoader);
             names.add(beanName);
 
             if (handlerMapping != null && controllerOnly) {
                 detectHandlerMethods(beanName, bean);
             }
+        }
+    }
+
+    private Object createControllerInstance(Class<?> controllerClass, ClassLoader classLoader) throws Exception {
+        Thread currentThread = Thread.currentThread();
+        ClassLoader originalContextClassLoader = currentThread.getContextClassLoader();
+        try {
+            currentThread.setContextClassLoader(classLoader);
+            var constructors = controllerClass.getDeclaredConstructors();
+            var target = java.util.Arrays.stream(constructors)
+                    .max(java.util.Comparator.comparingInt(c -> c.getParameterCount()))
+                    .orElseThrow();
+            target.setAccessible(true);
+            Class<?>[] parameterTypes = target.getParameterTypes();
+            Object[] args = new Object[parameterTypes.length];
+            for (int i = 0; i < parameterTypes.length; i++) {
+                args[i] = applicationContext.getBean(parameterTypes[i]);
+            }
+            return target.newInstance(args);
+        } finally {
+            currentThread.setContextClassLoader(originalContextClassLoader);
         }
     }
 

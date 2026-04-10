@@ -307,7 +307,6 @@ junoyi:
       - /favicon.ico
       # 资源文件地址
       - /files/**
-      - /test/**
     # 登录机制
     login:
       # 最大登录失败次数
