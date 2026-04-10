@@ -38,6 +38,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.junoyi</groupId>
+            <artifactId>junoyi-framework-permission</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <optional>true</optional>
