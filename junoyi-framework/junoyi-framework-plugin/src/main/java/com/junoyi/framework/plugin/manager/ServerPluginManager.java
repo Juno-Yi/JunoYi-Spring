@@ -3,11 +3,13 @@ package com.junoyi.framework.plugin.manager;
 import com.junoyi.framework.event.core.EventBus;
 import com.junoyi.framework.log.core.JunoYiLog;
 import com.junoyi.framework.log.core.JunoYiLogFactory;
+import com.junoyi.framework.plugin.config.PluginConfigService;
 import com.junoyi.framework.plugin.core.JunoYiJunoYiLoggerAdapter;
 import com.junoyi.framework.plugin.core.PluginLoader;
 import com.junoyi.framework.plugin.domain.LoadedPlugin;
 import com.junoyi.framework.plugin.spring.PluginBeanRegistrar;
 import com.junoyi.framework.plugin.spring.PluginServerAdapter;
+import com.junoyi.framework.plugin.spring.PluginWebExtensionManager;
 import com.junoyi.sdk.plugin.JunoYiPlugin;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +38,8 @@ public class ServerPluginManager {
     private final ConfigurableApplicationContext applicationContext;
     private final EventBus eventBus;
     private final ObjectProvider<RequestMappingHandlerMapping> handlerMappingProvider;
+    private final PluginWebExtensionManager extensionManager;
+    private final PluginConfigService pluginConfigService;
     private final PluginLoader pluginLoader = new PluginLoader();
 
     private final Map<String, LoadedPlugin> plugins = new ConcurrentHashMap<>();
@@ -45,10 +49,14 @@ public class ServerPluginManager {
     public ServerPluginManager(ConfigurableApplicationContext applicationContext,
                                EventBus eventBus,
                                @Qualifier("requestMappingHandlerMapping")
-                               ObjectProvider<RequestMappingHandlerMapping> handlerMappingProvider) {
+                               ObjectProvider<RequestMappingHandlerMapping> handlerMappingProvider,
+                               PluginWebExtensionManager extensionManager,
+                               PluginConfigService pluginConfigService) {
         this.applicationContext = applicationContext;
         this.eventBus = eventBus;
         this.handlerMappingProvider = handlerMappingProvider;
+        this.extensionManager = extensionManager;
+        this.pluginConfigService = pluginConfigService;
     }
 
     public synchronized void init() {
@@ -70,7 +78,7 @@ public class ServerPluginManager {
         List<File> sortedJars = new ArrayList<>(List.of(jarFiles));
         sortedJars.sort(Comparator.comparing(File::getName));
 
-        PluginBeanRegistrar beanRegistrar = new PluginBeanRegistrar(applicationContext, handlerMappingProvider.getIfAvailable());
+        PluginBeanRegistrar beanRegistrar = new PluginBeanRegistrar(applicationContext, handlerMappingProvider.getIfAvailable(), extensionManager);
         DefaultPluginManager defaultPluginManager = new DefaultPluginManager(eventBus, this);
 
         for (File jarFile : sortedJars) {
@@ -104,7 +112,8 @@ public class ServerPluginManager {
                     applicationContext.getId(),
                     new JunoYiJunoYiLoggerAdapter(JunoYiLogFactory.getLogger("Plugin-" + pluginName)),
                     defaultPluginManager,
-                    applicationContext
+                    applicationContext,
+                    pluginConfigService.create(loaded)
             ), pluginName);
 
             plugin.onLoad();

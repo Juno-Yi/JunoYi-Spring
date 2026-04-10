@@ -1,6 +1,7 @@
 package com.junoyi.framework.plugin.spring;
 
 import com.junoyi.sdk.JunoYiServer;
+import com.junoyi.sdk.config.PluginConfig;
 import com.junoyi.sdk.log.JunoYiLogger;
 import com.junoyi.sdk.plugin.PluginManager;
 import org.springframework.context.ApplicationContext;
@@ -14,15 +15,18 @@ public class PluginServerAdapter implements JunoYiServer {
     private final JunoYiLogger logger;
     private final PluginManager pluginManager;
     private final ApplicationContext applicationContext;
+    private final PluginConfig pluginConfig;
 
     public PluginServerAdapter(String serverName,
                                JunoYiLogger logger,
                                PluginManager pluginManager,
-                               ApplicationContext applicationContext) {
+                               ApplicationContext applicationContext,
+                               PluginConfig pluginConfig) {
         this.serverName = serverName;
         this.logger = logger;
         this.pluginManager = pluginManager;
         this.applicationContext = applicationContext;
+        this.pluginConfig = pluginConfig;
     }
 
     @Override
@@ -48,6 +52,11 @@ public class PluginServerAdapter implements JunoYiServer {
     @Override
     public boolean containsBean(String beanName) {
         return applicationContext.containsBean(beanName);
+    }
+
+    @Override
+    public PluginConfig getPluginConfig() {
+        return pluginConfig;
     }
 }
 

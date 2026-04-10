@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.ArrayList;
@@ -32,11 +33,14 @@ public class PluginBeanRegistrar {
     private final JunoYiLog log = JunoYiLogFactory.getLogger(PluginBeanRegistrar.class);
     private final ConfigurableApplicationContext applicationContext;
     private final RequestMappingHandlerMapping handlerMapping;
+    private final PluginWebExtensionManager extensionManager;
 
     public PluginBeanRegistrar(ConfigurableApplicationContext applicationContext,
-                               RequestMappingHandlerMapping handlerMapping) {
+                               RequestMappingHandlerMapping handlerMapping,
+                               PluginWebExtensionManager extensionManager) {
         this.applicationContext = applicationContext;
         this.handlerMapping = handlerMapping;
+        this.extensionManager = extensionManager;
     }
 
     public List<String> register(PluginInfo pluginInfo, ClassLoader classLoader) throws Exception {
@@ -100,6 +104,9 @@ public class PluginBeanRegistrar {
                 bean = getBeanWithClassLoader(beanFactory, beanName, classLoader);
             }
 
+            if (bean instanceof HandlerInterceptor interceptor) {
+                extensionManager.registerInterceptor(interceptor);
+            }
             names.add(beanName);
 
             if (handlerMapping != null && controllerOnly) {

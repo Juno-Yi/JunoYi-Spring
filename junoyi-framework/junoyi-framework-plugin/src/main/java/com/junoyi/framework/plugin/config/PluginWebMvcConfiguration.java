@@ -1,7 +1,9 @@
 package com.junoyi.framework.plugin.config;
 
 import com.junoyi.framework.permission.properties.PermissionProperties;
+import com.junoyi.framework.plugin.spring.PluginCompositeRequestInterceptor;
 import com.junoyi.framework.plugin.spring.PluginPermissionInterceptor;
+import com.junoyi.framework.plugin.spring.PluginWebExtensionManager;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,9 +22,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class PluginWebMvcConfiguration implements WebMvcConfigurer {
 
     private final PermissionProperties permissionProperties;
+    private final PluginWebExtensionManager extensionManager;
 
-    public PluginWebMvcConfiguration(PermissionProperties permissionProperties) {
+    public PluginWebMvcConfiguration(PermissionProperties permissionProperties,
+                                     PluginWebExtensionManager extensionManager) {
         this.permissionProperties = permissionProperties;
+        this.extensionManager = extensionManager;
     }
 
     @Override
@@ -30,6 +35,10 @@ public class PluginWebMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new PluginPermissionInterceptor(permissionProperties))
                 .addPathPatterns("/**")
                 .order(10);
+
+        registry.addInterceptor(new PluginCompositeRequestInterceptor(extensionManager))
+                .addPathPatterns("/**")
+                .order(20);
     }
 }
 

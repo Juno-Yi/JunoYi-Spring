@@ -1,6 +1,7 @@
 package com.junoyi.sdk;
 
 
+import com.junoyi.sdk.config.PluginConfig;
 import com.junoyi.sdk.log.JunoYiLogger;
 import com.junoyi.sdk.plugin.PluginManager;
 
@@ -18,4 +19,6 @@ public interface JunoYiServer {
     <T> T getBean(Class<T> type);
 
     boolean containsBean(String beanName);
+
+    PluginConfig getPluginConfig();
 }
